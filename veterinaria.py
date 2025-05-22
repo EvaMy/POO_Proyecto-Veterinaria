@@ -63,7 +63,7 @@ class EliminarAdoptante:
             print("El usuario fue eliminado.") 
             return usuarios_adoptantes_nuevo
             
-            #ChatGPT me recomendó:
+            #ChatGPT me recomendó hacer:
             #global usuarios_adoptantes
             #usuarios_adoptantes=usuarios_adoptantes_nuevo
         else:
