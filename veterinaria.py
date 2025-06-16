@@ -1,82 +1,7 @@
-##Tal vez quiera crear empleados en el futuro
-class Persona(object):
-    def __init__(self,nombre, apellido, dni, email):
-        self.nombre=nombre
-        self.apellido=apellido
-        self.dni=dni
-        self.email=email
-
-usuarios_adoptantes=[]
-class UsuarioAdoptante(Persona):
-    def __init__(self,nombre,apellido, dni, email, preferencias):
-        super().__init__(nombre, apellido, dni,email)
-        self.preferencias=preferencias ##FIJARSE (raza,edad,tamaño)
-
-    def registrar_Persona(self):
-        usuarios_adoptantes.append(self)
-
-    def modificar_datos(self, nombre, apellido, email, preferencias):
-        self.nombre=nombre
-        self.apellido=apellido
-        self.email=email
-        self.preferencias=preferencias
-
-    @staticmethod
-    def buscar_persona( usuarios_adoptantes, dni_buscado):
-        i=0
-        v=len(usuarios_adoptantes)
-        while i<v:
-            if usuarios_adoptantes[i].dni==dni_buscado:
-                return usuarios_adoptantes[i]
-            i=i+1
-        return False
-
-
-    
-
-perros_a_adoptar=[]
-class Perro(object):
-    def __init__(self, nombre, raza, edad, tamaño, peso, estado_salud, vacunado, estado, temperamento,id):
-        self.nombre=nombre
-        self.raza=raza
-        self.edad=edad
-        self.tamaño=tamaño
-        self.peso=peso
-        self.estado_salud=estado_salud
-        self.vacunado=vacunado 
-        self.estado=estado 
-        self.temperamento=temperamento 
-        self.id=id 
-
-    def registrar_Mascota(self):
-        perros_a_adoptar.append(self)
-
-
-    def modificar_datos(self, nombre, raza, edad, tamaño, peso, estado_salud, vacunado, estado, temperamento,id):
-        self.nombre=nombre
-        self.raza=raza
-        self.edad=edad
-        self.tamaño=tamaño
-        self.peso=peso
-        self.estado_salud=estado_salud
-        self.vacunado=vacunado 
-        self.estado=estado 
-        self.temperamento=temperamento 
-        self.id=id 
-
-
-        ###############################################################
-    @staticmethod
-    def buscar_perro(perros_a_adoptar, ingresarId):
-        i=0
-        v=len(perros_a_adoptar)
-        while v>i:
-            if ingresarId ==perros_a_adoptar[i].id:
-                return perros_a_adoptar[i]
-            i=i+1 
-        return False
-
-
+#from clases.persona import persona
+from clases.usuario_adoptante import UsuarioAdoptante, usuarios_adoptantes
+from clases.perro import Perro, perros_a_adoptar
+#lógica de ejecución
 
 perros_adoptados=[]
 class SistemaAdopcion(object):
@@ -136,6 +61,7 @@ class SistemaAdopcion(object):
         print("No hay perros que coincidan con las preferencias.")
         return None
 
+    @staticmethod
     def eliminar_perro_por_id(perros_a_adoptar, id_eliminado):
         perro=Perro.buscar_perro(perros_a_adoptar,id_eliminado)
         if perro!=False:
@@ -145,7 +71,7 @@ class SistemaAdopcion(object):
             print("No sé encontró al perro")
             
     @staticmethod
-    def  confirmar_adopcion(perros_adoptados, id_perro):
+    def  confirmar_adopcion(id_perro):
         perro=Perro.buscar_perro(perros_adoptados,id_perro)
         if perro!=False:
             SistemaAdopcion.eliminar_perro_por_id(perros_a_adoptar, id_perro)
@@ -155,8 +81,8 @@ class SistemaAdopcion(object):
         if perro!=False:
             print("El perro esta disponible para adopción.")
             perros_adoptados.append(perro)
-            SistemaAdopcion.cambiar_estado(perros_a_adoptar, id_perro)###########
-            SistemaAdopcion.confirmar_adopcion(perros_adoptados,id_perro)
+            SistemaAdopcion.cambiar_estado(perros_a_adoptar, id_perro)#cambiar estado
+            SistemaAdopcion.confirmar_adopcion(id_perro)
         else:
             print("No se encontró el id.")
         
