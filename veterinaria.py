@@ -8,17 +8,16 @@ class Persona(object):
 
 usuarios_adoptantes=[]
 class UsuarioAdoptante(Persona):
-    def __init__(self,nombre, dni, email, preferencias):
-        super().__init__(nombre,dni,email)
+    def __init__(self,nombre,apellido, dni, email, preferencias):
+        super().__init__(nombre, apellido, dni,email)
         self.preferencias=preferencias ##FIJARSE (raza,edad,tamaño)
 
     def registrar_Persona(self):
         usuarios_adoptantes.append(self)
 
-    def modificar_datos(self, nombre, apellido, dni, email, preferencias):
+    def modificar_datos(self, nombre, apellido, email, preferencias):
         self.nombre=nombre
         self.apellido=apellido
-        self.dni=dni
         self.email=email
         self.preferencias=preferencias
 
@@ -52,6 +51,20 @@ class Perro(object):
     def registrar_Mascota(self):
         perros_a_adoptar.append(self)
 
+
+    def modificar_datos(self, nombre, raza, edad, tamaño, peso, estado_salud, vacunado, estado, temperamento,id):
+        self.nombre=nombre
+        self.raza=raza
+        self.edad=edad
+        self.tamaño=tamaño
+        self.peso=peso
+        self.estado_salud=estado_salud
+        self.vacunado=vacunado 
+        self.estado=estado 
+        self.temperamento=temperamento 
+        self.id=id 
+
+
         ###############################################################
     @staticmethod
     def buscar_perro(perros_a_adoptar, ingresarId):
@@ -59,7 +72,7 @@ class Perro(object):
         v=len(perros_a_adoptar)
         while v>i:
             if ingresarId ==perros_a_adoptar[i].id:
-                return perros_a_adoptar[i].id
+                return perros_a_adoptar[i]
             i=i+1 
         return False
 
@@ -68,61 +81,85 @@ class Perro(object):
 perros_adoptados=[]
 class SistemaAdopcion(object):
     def __init__(self, perro, persona, preferencias):
-        self.persona=persona
         self.perro=perro
         self.persona=persona
         self.preferencias=preferencias
 
+    @staticmethod
     def cambiar_estado(self,perros_a_adoptar,perro_id):
-        perro=Perro.buscar_perro(perro_id)
-        i=0
-        v=len(perros_a_adoptar)
-        while i<v:
-            if perro_id==perros_a_adoptar[i].id:
-                pregunta2=input("Desea cambiar a (disponible, reservado o adoptado)")
-                if pregunta2.upper()=="DISPONIBLE":
-                    perros_a_adoptar[i].estado=pregunta2
-                elif pregunta2.upper()=="RESERVADO":
-                    perros_a_adoptar[i].estado=pregunta2
-                elif pregunta2.upper()=="ADOPTADO":
-                    perros_a_adoptar[i].estado=pregunta2
-                else:
-                    print("No se encontró un perro con ese id.")
-            i=i+1
+        perro=Perro.buscar_perro(perros_a_adoptar,perro_id)
+        if perro!=False:
+            pregunta2=input("Desea cambiar a (disponible, reservado o adoptado)")
+            if pregunta2.upper()=="DISPONIBLE":
+                perro.estado=pregunta2
+            elif pregunta2.upper()=="RESERVADO":
+                perro.estado=pregunta2
+            elif pregunta2.upper()=="ADOPTADO":
+                perro.estado=pregunta2
+            else:
+                print("No se encontró un perro con ese id.")
+
         print("El estado fue modificado.")
 
-######
+
     def mostrar_informacion(self,perros_a_adoptar, perro_id):
         perro=Perro.buscar_perro(perros_a_adoptar, perro_id)
+        if perro!=False:
+            print ("Los datos son: Nombre: "+perro.nombre+
+                    "\nRaza: "+perro.raza+
+                    "\nEdad: "+str(perro.edad)
+                    +"\nTamaño: "+perro.tamaño+
+                    "\nPeso: "+str(perro.peso)+
+                    "\nEstado de salud: "+perro.estado_salud
+                    +"\nVacunado: "+str(perro.vacunado)+
+                    "\nEstado: "+perro.estado+
+                    "\nTemperamento: "+perro.temperamento+
+                    "\nid: "+str(perro.id)+".")
+    @staticmethod
+    def sugerir_perro_segun_preferencias(perros_a_adoptar, preferencia):
         i=0
-        v=len(perros_a_adoptar)
-        while i<v:
-            if perro==perros_a_adoptar[i].id:
-                print ("Los datos son: Nombre: "+perros_a_adoptar[i].nombre+
-                       "\nRaza: "+perros_a_adoptar[i].raza+
-                       "\nEdad: "+str(perros_a_adoptar[i].edad)
-                       +"\nTamaño: "+perros_a_adoptar[i].tamaño+
-                       "\nPeso: "+str(perros_a_adoptar[i].peso)+
-                       "\nEstado de salud: "+perros_a_adoptar[i].estado_salud
-                       +"\nVacunado: "+perros_a_adoptar[i].vacunado+
-                       "\nEstado: "+perros_a_adoptar[i].estado+
-                        "\nTemperamento: "+perros_a_adoptar[i].temperamento+
-                       "\nid: "+str(perros_a_adoptar[i].id)+".")
+        while i<len(perros_a_adoptar):
+            if perros_a_adoptar[i].raza==preferencia:
+                return perros_a_adoptar[i]
+            if perros_a_adoptar[i].edad==preferencia:
+                return perros_a_adoptar[i]
+            if perros_a_adoptar[i].tamaño==preferencia:
+                return perros_a_adoptar[i]
+            if perros_a_adoptar[i].peso==preferencia:
+                return perros_a_adoptar[i]
+            if perros_a_adoptar[i].temperamento==preferencia:
+                return perros_a_adoptar[i]
+            if perros_a_adoptar[i].estado_salud==preferencia:
+                return perros_a_adoptar[i]
             i=i+1
 
-        ##fijarse bien, me hace ruido este. Agregar buscar perro
-    def buscar_perro_adopcion(self,perros_a_adopar, id_perro):
+        print("No hay perros que coincidan con las preferencias.")
+        return None
+
+    def eliminar_perro_por_id(perros_a_adoptar, id_eliminado):
+        perro=Perro.buscar_perro(perros_a_adoptar,id_eliminado)
+        if perro!=False:
+            perros_a_adoptar.remove(perro)
+            print("Se eliminó el perro registrado")
+        else:
+            print("No sé encontró al perro")
+            
+    @staticmethod
+    def  confirmar_adopcion(perros_adoptados, id_perro):
+        perro=Perro.buscar_perro(perros_adoptados,id_perro)
+        if perro!=False:
+            SistemaAdopcion.eliminar_perro_por_id(perros_a_adoptar, id_perro)
+
+    def buscar_perro_adopcion(perros_a_adoptar, id_perro):
         perro=Perro.buscar_perro(perros_a_adoptar, id_perro)
-        i=0
-        v=len(perros_a_adoptar)
-        while i<v:
-            if perro==perros_a_adoptar[i].id:
-                print("El perro esta disponible para adopción.")
-                perros_adoptados=perros_adoptados+[perros_a_adoptar[i]]
-            else:
-                print("No se encontró el id.")
-            i=i+1
-##########
+        if perro!=False:
+            print("El perro esta disponible para adopción.")
+            perros_adoptados.append(perro)
+            SistemaAdopcion.cambiar_estado(perros_a_adoptar, id_perro)###########
+            SistemaAdopcion.confirmar_adopcion(perros_adoptados,id_perro)
+        else:
+            print("No se encontró el id.")
+        
 
     def ver_historial_por_dni(self,usuarios_adoptantes, dni_buscado):
         persona=UsuarioAdoptante.buscar_persona(usuarios_adoptantes, dni_buscado)
@@ -136,30 +173,24 @@ class SistemaAdopcion(object):
             print("Dni no coincide con un usuario registrado.")
         
 
-    def modificar_datos_por_dni(self,usuarios_adoptantes, dni_buscado):
+    def modificar_datos_por_dni(self,usuarios_adoptantes, dni_buscado,nuevo_nombre,nuevo_apellido,nuevo_email,nueva_preferencias):
         persona=UsuarioAdoptante.buscar_persona(usuarios_adoptantes, dni_buscado)
         if persona != False:
-            nombre=input("Ingrese nombre: ")
-            apellido=input("Ingrese apellido: ")
-            email=input("Ingrese email: ")
-            preferencias=input("Ingrese preferencias: ")
-            persona.modificar_datos(nombre, apellido, email, preferencias)
+            persona.modificar_datos(nuevo_nombre, nuevo_apellido, nuevo_email, nueva_preferencias)
+            print("Los datos fueron modificados correctamente")
         else:
             print("Dni no cioncide con un usuario registrado.")
 
-
-    def eliminar_datos_por_dni(usuarios_adoptantes,dni_eliminado):
+#Iba a hacer otra lista con los nuevos elementos, pero chat-gpt me recomendó el remove para que tenga menos errores
+    def eliminar_usuario_por_dni(usuarios_adoptantes,dni_eliminado):
             persona=UsuarioAdoptante.buscar_persona(usuarios_adoptantes, dni_eliminado)
-            usuarios_adoptantes_nuevo=[]
-            i=0
-            v=len(usuarios_adoptantes)
-            while i<v:
-                if persona.dni != usuarios_adoptantes[i].dni:
-                    usuarios_adoptantes_nuevo.append(usuarios_adoptantes[i]) 
-                i=i+1
-            print("El usuario fue eliminado.")
-            return usuarios_adoptantes_nuevo
-            
+            if persona!=False:
+                usuarios_adoptantes.remove(persona)
+                print ("Usuario eliminado")
+            else: 
+                print("No se encontró a ese usuario")
+
+  
 #usuarios_adoptantes=SistemaAdopcion.eliminar_datos_por_dni(usuarios_adoptantes,"12345678")         
 
 
