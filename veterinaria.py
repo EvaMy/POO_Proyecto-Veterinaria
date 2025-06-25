@@ -117,6 +117,10 @@ class SistemaAdopcion(object):
                 print("No se encontró a ese usuario")
 
   
+if __name__ == "__main__":
+    # Código de prueba o menú principal
+    print("Bienvenido al sistema de adopciones.")
+
 #usuarios_adoptantes=SistemaAdopcion.eliminar_datos_por_dni(usuarios_adoptantes,"12345678")         
 
 
